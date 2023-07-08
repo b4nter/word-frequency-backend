@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using WordCounter.objects;
+using System.Linq;
 
 namespace WordCounter
 {
@@ -90,15 +91,10 @@ namespace WordCounter
 
         public static string[] ClearWords(string[] words, string[] filterWords, int wordMinLength = 0)
         {
-            List<string> filtered = new List<string>();
-            foreach (string word in words)
-            {
-                string lowerCaseWord = word.ToLower();
-                if (!filterWords.Contains(lowerCaseWord) && lowerCaseWord.Length >= wordMinLength)
-                {
-                    filtered.Add(lowerCaseWord);
-                }
-            }
+            List<string> filtered = (from string word in words
+                                     let lowerCaseWord = word.ToLower()
+                                     where !filterWords.Contains(lowerCaseWord) && lowerCaseWord.Length >= wordMinLength
+                                     select lowerCaseWord).ToList();
             return filtered.ToArray();
         }
     }
