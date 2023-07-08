@@ -12,8 +12,7 @@ namespace WordFrequencyAPI.Controllers
         [HttpGet]
         public IEnumerable<CountedWord> Get()
         {
-            var bbc = "http://feeds.bbci.co.uk/news/uk/rss.xml";
-            return Counter.GetCountedWords(bbc, "BBC"); ;
+            return Counter.GetWords();
         }
     }
 }

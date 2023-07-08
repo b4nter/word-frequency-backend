@@ -16,7 +16,7 @@ namespace WordCounterTest
                                   "Hannah","Dingley","Forest","Green","Rovers", "name", "first", "female",
                                   "boss","of","a","mens","professional","football", "side" };
 
-            var result = Counter.GetWordsOutOfSentence(sentences);
+            string[] result = Counter.GetWordsOutOfSentence(sentences);
             CollectionAssert.AreEqual(expected, result);
         }
 
@@ -25,7 +25,7 @@ namespace WordCounterTest
         {
             string[] words = { "word", "dog", "cat", "dog", "word", "something", "word" };
 
-            var expected = new Dictionary<string, int>
+            Dictionary<string, int> expected = new Dictionary<string, int>
             {
                 { "word", 3 },
                 { "dog", 2 },
@@ -33,7 +33,7 @@ namespace WordCounterTest
                 { "something", 1 }
             };
 
-            var result = Counter.GroupWords(words);
+            Dictionary<string, int> result = Counter.GroupWords(words);
 
             CollectionAssert.AreEquivalent(expected, result);
         }
@@ -45,7 +45,7 @@ namespace WordCounterTest
             string[] unwantedWords = { "word", "foo" };
             string[] expected = { "dog", "cat", "dog", "something" };
 
-            var result = Counter.ClearWords(words, unwantedWords);
+            string[] result = Counter.ClearWords(words, unwantedWords);
 
             CollectionAssert.AreEqual(expected, result);
         }
@@ -61,24 +61,12 @@ namespace WordCounterTest
             string[] unwantedWords2 = { "word", "foo" };
             string[] expected2 = { "dog", "cat", "dog", "something" };
 
-            var result = Counter.ClearWords(words, unwantedWords, 4);
+            string[] result = Counter.ClearWords(words, unwantedWords, 4);
 
-            var result2 = Counter.ClearWords(words2, unwantedWords2, 3);
+            string[] result2 = Counter.ClearWords(words2, unwantedWords2, 3);
 
             CollectionAssert.AreEqual(expected, result);
             CollectionAssert.AreEqual(expected2, result2);
-        }
-
-        [TestMethod]
-        public void Test_MergeCountedWords()
-        {
-            var expected = new Dictionary<string, int>
-            {
-                { "word", 3 },
-                { "dog", 2 },
-                { "cat", 1 },
-                { "something", 1 }
-            };
         }
     }
 }
