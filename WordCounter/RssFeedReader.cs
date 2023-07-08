@@ -7,7 +7,7 @@ namespace WordCounter
     {
         public string[] GetTitles(string url)
         {
-            var titles = new List<string>();
+            List<string> titles = new List<string>();
             using (XmlReader reader = XmlReader.Create(url))
             {
                 SyndicationFeed feed = SyndicationFeed.Load(reader);
