@@ -7,7 +7,7 @@ namespace WordCounter
 {
     public static class Counter
     {
-        private static readonly string[] FILTER_WORDS = { "but", "your", "can", "out", "for", "how", "the", "not", "who", "and", "her", "his", "you", "was", "from", "with", "after", "over", "into", "bbc" };
+        private static readonly string[] FILTER_WORDS = { "are", "has", "had", "but", "your", "can", "out", "for", "how", "the", "not", "who", "and", "her", "his", "you", "was", "from", "with", "after", "over", "into", "bbc" };
         private const int WORD_MIN_LENGTH = 3;
         private const int WORD_MAX_LENGTH = 80;
         private static readonly Dictionary<string, string> NEWS_OUTLETS_URLS = new Dictionary<string, string>
