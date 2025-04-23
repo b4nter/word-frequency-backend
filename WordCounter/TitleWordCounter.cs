@@ -1,20 +1,21 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using WordCounter.Interfaces;
 using WordCounter.Models;
 using WordCounter.objects;
 
 namespace WordCounter
 {
-    public class TitleWordCounter(ITitleFetcher titleFetcher, IConfiguration configuration) : ITitleWordCounter
+    public class TitleWordCounter(ITitleFetcher titleFetcher, IConfiguration configuration, IMemoryCache memoryCache) : ITitleWordCounter
     {
-        public List<CountedWord> GetCountedWords()
+        private List<CountedWord> GetWords()
         {
             List<CountedWord> result = new List<CountedWord>();
             string[] wordsToSkip = configuration.GetSection("WordsToSkip").Get<string[]>();
             int minWordLength = configuration.GetSection("MinWordLength").Get<int>();
             int maxWordLength = configuration.GetSection("MaxWordLength").Get<int>();
 
-            List <NewsOutletTitle> titles = titleFetcher.GetTitles();
+            List<NewsOutletTitle> titles = titleFetcher.GetTitles();
 
             Dictionary<string, List<string>> groupedWords = new Dictionary<string, List<string>>();
             foreach (var title in titles)
@@ -35,6 +36,22 @@ namespace WordCounter
             }
 
             return result;
+        }
+
+        public List<CountedWord> GetCountedWords()
+        {
+            memoryCache.TryGetValue("cachedCountedWords", out List<CountedWord>? cachedCountedWords);
+
+            if(cachedCountedWords == null)
+            {
+                cachedCountedWords = GetWords();
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+                memoryCache.Set("cachedCountedWords", cachedCountedWords, cacheEntryOptions);
+            }
+    
+            return cachedCountedWords;
         }
     }
 }

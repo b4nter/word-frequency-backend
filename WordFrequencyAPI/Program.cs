@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using WordCounter;
 using WordCounter.Interfaces;
 
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<ITitleFetcher, TitleFetcher>();
 builder.Services.AddScoped<ITitleWordCounter, TitleWordCounter>();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 
 WebApplication app = builder.Build();
 
