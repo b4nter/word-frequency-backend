@@ -47,7 +47,7 @@ namespace WordCounter
                 cachedCountedWords = GetWords();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(3));
                 memoryCache.Set("cachedCountedWords", cachedCountedWords, cacheEntryOptions);
             }
     
