@@ -1,3 +1,6 @@
+using WordCounter;
+using WordCounter.Interfaces;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -13,6 +16,9 @@ builder.Services.AddCors(options =>
                .AllowAnyOrigin();
     });
 });
+
+builder.Services.AddScoped<ITitleFetcher, TitleFetcher>();
+builder.Services.AddScoped<ITitleWordCounter, TitleWordCounter>();
 
 WebApplication app = builder.Build();
 

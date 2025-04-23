@@ -6,17 +6,15 @@ namespace WordCounterTest
     [TestClass]
     public class Test
     {
-        [TestMethod]
-        public void Test_GetWordsOutOfSentence()
+        [DataTestMethod]
+        [DataRow("Chris Pincher: MP faces eight-", ["Chris", "Pincher", "MP", "faces", "eight"])]
+        [DataRow("Dog  'almost died'", ["Dog", "almost", "died"])]
+        [DataRow("Hannah Dingley: Forest Green Rovers name first female boss of a men's professional football side", 
+                ["Hannah", "Dingley", "Forest", "Green", "Rovers", "name", "first", 
+                 "female", "boss", "of", "a", "mens", "professional", "football", "side"])]
+        public void Test_GetWordsOutOfSentence1(string input, params string[] expected)
         {
-            string[] sentences = { "Chris Pincher: MP faces eight-",
-                                   "Dog  'almost died'",
-                                   "Hannah Dingley: Forest Green Rovers name first female boss of a men's professional football side"};
-            string[] expected = { "Chris", "Pincher", "MP", "faces", "eight", "Dog", "almost", "died",
-                                  "Hannah","Dingley","Forest","Green","Rovers", "name", "first", "female",
-                                  "boss","of","a","mens","professional","football", "side" };
-
-            string[] result = Counter.GetWordsOutOfSentence(sentences);
+            string[] result = Counter.GetWordsOutOfSentence(input);
             CollectionAssert.AreEqual(expected, result);
         }
 
@@ -33,7 +31,7 @@ namespace WordCounterTest
                 { "something", 1 }
             };
 
-            Dictionary<string, int> result = Counter.GroupWords(words);
+            Dictionary<string, int> result = Counter.CountWords(words);
 
             CollectionAssert.AreEquivalent(expected, result);
         }
@@ -45,7 +43,7 @@ namespace WordCounterTest
             string[] unwantedWords = { "word", "foo" };
             string[] expected = { "dog", "cat", "dog", "something" };
 
-            string[] result = Counter.ClearWords(words, unwantedWords);
+            string[] result = Counter.ClearWords(words, unwantedWords,0, 100);
 
             CollectionAssert.AreEqual(expected, result);
         }
@@ -61,9 +59,9 @@ namespace WordCounterTest
             string[] unwantedWords2 = { "word", "foo" };
             string[] expected2 = { "dog", "cat", "dog", "something" };
 
-            string[] result = Counter.ClearWords(words, unwantedWords, 4);
+            string[] result = Counter.ClearWords(words, unwantedWords, 4, 100);
 
-            string[] result2 = Counter.ClearWords(words2, unwantedWords2, 3);
+            string[] result2 = Counter.ClearWords(words2, unwantedWords2, 3, 100);
 
             CollectionAssert.AreEqual(expected, result);
             CollectionAssert.AreEqual(expected2, result2);
