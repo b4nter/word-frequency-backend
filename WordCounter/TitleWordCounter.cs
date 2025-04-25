@@ -8,7 +8,9 @@ namespace WordCounter
 {
     public class TitleWordCounter(ITitleFetcher titleFetcher, IConfiguration configuration, IMemoryCache memoryCache) : ITitleWordCounter
     {
-        private List<CountedWord> GetWords()
+        private readonly int MEMORY_CACHE_EXPIRATION = configuration.GetSection("MemoryCacheAbsoluteExpirationInSeconds").Get<int>();
+
+        private List<CountedWord> GetCountedWords()
         {
             List<CountedWord> result = new List<CountedWord>();
             string[] wordsToSkip = configuration.GetSection("WordsToSkip").Get<string[]>();
@@ -38,20 +40,31 @@ namespace WordCounter
             return result;
         }
 
-        public List<CountedWord> GetCountedWords()
+        public void CountWords()
         {
             memoryCache.TryGetValue("cachedCountedWords", out List<CountedWord>? cachedCountedWords);
 
-            if(cachedCountedWords == null)
+            if (cachedCountedWords == null)
             {
-                cachedCountedWords = GetWords();
+                cachedCountedWords = GetCountedWords();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(3));
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(MEMORY_CACHE_EXPIRATION));
                 memoryCache.Set("cachedCountedWords", cachedCountedWords, cacheEntryOptions);
             }
+        }
+
+        public List<CountedWord> GetWords()
+        {
+            CountWords();
+            List<CountedWord>? words = memoryCache.Get<List<CountedWord>>("cachedCountedWords");
     
-            return cachedCountedWords;
+            if(words == null)
+            {
+                throw new Exception("TitleWordCounter.GetWords: Something went wrong, no counted words found.");
+            }
+
+            return words;
         }
     }
 }

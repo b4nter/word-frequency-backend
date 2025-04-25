@@ -18,8 +18,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<ITitleFetcher, TitleFetcher>();
-builder.Services.AddScoped<ITitleWordCounter, TitleWordCounter>();
+builder.Services.AddHostedService<WordCounterBackgroundService>();
+
+builder.Services.AddSingleton<ITitleFetcher, TitleFetcher>();
+builder.Services.AddSingleton<ITitleWordCounter, TitleWordCounter>();
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 
 WebApplication app = builder.Build();

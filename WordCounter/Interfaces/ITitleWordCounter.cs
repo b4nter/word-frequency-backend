@@ -9,6 +9,7 @@ namespace WordCounter.Interfaces
 {
     public interface ITitleWordCounter
     {
-        List<CountedWord> GetCountedWords();
+        List<CountedWord> GetWords();
+        void CountWords();
     }
 }

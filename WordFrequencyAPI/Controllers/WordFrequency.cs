@@ -12,7 +12,7 @@ namespace WordFrequencyAPI.Controllers
         [HttpGet]
         public IEnumerable<CountedWord> Get()
         {
-            return counter.GetCountedWords();
+            return counter.GetWords();
         }
     }
 }
