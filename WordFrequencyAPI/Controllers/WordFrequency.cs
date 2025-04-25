@@ -4,15 +4,15 @@ using WordCounter.objects;
 
 namespace WordFrequencyAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class WordFrequency(ITitleWordCounter counter) : ControllerBase
     {
-        // GET: api/WordFrequency
+        // GET: api/WordFrequency/GetCountedWords
         [HttpGet]
-        public IEnumerable<CountedWord> Get()
+        public IEnumerable<CountedWord> GetCountedWords()
         {
-            return counter.GetWords();
+            return counter.GetCountedWords();
         }
     }
 }

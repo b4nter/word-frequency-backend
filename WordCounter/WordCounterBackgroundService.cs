@@ -4,7 +4,7 @@ using WordCounter.Interfaces;
 
 namespace WordCounter
 {
-    public class WordCounterBackgroundService(ITitleWordCounter wordCounter, IConfiguration configuration) : BackgroundService
+    public class WordCounterBackgroundService(ITitleFetcher titleFetcher, IConfiguration configuration) : BackgroundService
     {
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -12,7 +12,7 @@ namespace WordCounter
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                wordCounter.CountWords();
+                titleFetcher.UpdateTitleCache();
                 await Task.Delay(delay, stoppingToken);
             }
         }
