@@ -3,8 +3,14 @@ using WordCounter.objects;
 
 namespace WordCounter
 {
-    public static class Counter
+    public static class WordCounterHelper
     {
+        public static string[] GetClearedWordsOutOfSentence(string sentence, string[] wordsToSkip, int wordMinLength, int wordMaxLength)
+        {
+            string[] words = GetWordsOutOfSentence(sentence);
+            return ClearWords(words, wordsToSkip, wordMinLength, wordMaxLength);
+        }
+
         public static string[] GetWordsOutOfSentence(string sentence)
         {
             string[] words = { };

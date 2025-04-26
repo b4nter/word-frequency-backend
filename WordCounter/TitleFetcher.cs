@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using WordCounter.Interfaces;
 using WordCounter.Models;
-using WordCounter.objects;
 
 namespace WordCounter
 {
@@ -56,14 +54,14 @@ namespace WordCounter
                 {
                     SyndicationFeed feed = SyndicationFeed.Load(reader);
 
-                    foreach (SyndicationItem item in feed.Items)
+                    var outletTitles = feed.Items.Select(item => new NewsOutletTitle
                     {
-                        titles.Add(new NewsOutletTitle
-                        {
-                            NewsOutletName = newsOutlet.Key,
-                            Title = item.Title.Text
-                        });
-                    }
+                        NewsOutletName = newsOutlet.Key,
+                        Title = item.Title.Text,
+                        Url = item.GetUrl()
+                    });
+
+                    titles.AddRange(outletTitles);
                 }
             }
 
